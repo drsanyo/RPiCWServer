@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CW Server</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>CW Translator</h1>
+        <div class="control-panel">
+            <div class="input-group">
+                <label for="message">Message:</label>
+                <textarea id="message" rows="4"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="frequency">Frequency (Hz):</label>
+                <input type="number" id="frequency" value="3505" min="1800" max="30000">
+            </div>
+
+            <div class="input-group">
+                <label for="speed">Speed (WPM):</label>
+                <input type="number" id="speed" value="12" min="5" max="50">
+            </div>
+
+            <div class="button-group">
+                <button id="startBtn" onclick="startTransmission()">Start</button>
+                <button id="stopBtn" onclick="stopTransmission()">Stop</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function startTransmission() {
+            const message = document.getElementById('message').value;
+            const frequency = parseInt(document.getElementById('frequency').value);
+            const speed = parseInt(document.getElementById('speed').value);
+
+            try {
+                const response = await fetch('/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        frequency: frequency,
+                        speed: speed
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('stopBtn').disabled = false;
+                } else {
+                    console.error('Failed to start transmission');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function stopTransmission() {
+            try {
+                const response = await fetch('/stop', {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    document.getElementById('startBtn').disabled = false;
+                    document.getElementById('stopBtn').disabled = true;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

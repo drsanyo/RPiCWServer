@@ -25,6 +25,9 @@ class ClockMock:
         self._enabled = value
         print('set enabled to ' + str(value))
 
+    def configure_clock(self, frequency , pll):
+        self._frequency = frequency
+
 class SMBusMock:
     clock_0 = ClockMock(frequency=0, enabled=False)
     def __init__(self, addr):
@@ -45,7 +48,12 @@ class Si5351:
 
 
     def set_frequency(self, freq_hz):
-        self.board.clock_0.frequency = freq_hz
+        if IS_RASPBERRYPI:
+            import adafruit_si5351
+            self.board.clock_0.configure_clock(freq_hz, adafruit_si5351.SI5351_PLL_A)
+        else:
+            self.board.clock_0.configure_clock(freq_hz, 0)
+
 
     def key_on(self):
         self.board.clock_0.enabled = True

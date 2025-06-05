@@ -69,8 +69,10 @@ async def start_transmission(request: TransmissionRequest):
                     await asyncio.sleep(dot_duration)
                 elif symbol == ' ':
                     await asyncio.sleep(dot_duration * 3)
+            await asyncio.sleep(dot_duration * 3)
 
-    asyncio.create_task(transmit())
+    if morse_code:
+        asyncio.create_task(transmit())
     return {"status": "started"}
 
 
@@ -85,4 +87,4 @@ async def stop_transmission():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=80)

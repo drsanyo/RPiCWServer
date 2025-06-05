@@ -2,7 +2,7 @@ import os
 
 IS_RASPBERRYPI = os.uname()[1] == 'raspberrypi'
 
-class Clock0Mock:
+class ClockMock:
     def __init__(self, frequency, enabled):
         self._frequency = frequency
         self._enabled = enabled
@@ -26,15 +26,9 @@ class Clock0Mock:
         print('set enabled to ' + str(value))
 
 class SMBusMock:
-    clock_0 = Clock0Mock()
-    clock_1 = Clock0Mock()
-    clock_2 = Clock0Mock()
+    clock_0 = ClockMock(frequency=0, enabled=False)
     def __init__(self, addr):
         pass
-
-    def write_byte_data(self, a, b, c):
-        pass
-
 
 class Si5351:
     def __init__(self, i2c_bus=1, i2c_address=0x60):

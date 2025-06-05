@@ -45,7 +45,7 @@ async def start_transmission(request: TransmissionRequest):
     morse_code = morse.text_to_morse(request.message)
     dot_duration = 1.2 / request.speed  # Standard dot duration formula
 
-    # Set frequency
+    print('Frequency: ' + str(request.frequency))
     si5351.set_frequency(request.frequency)
 
     # Transmit the message

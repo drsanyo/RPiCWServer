@@ -1,7 +1,15 @@
-import smbus
-from time import sleep
+import os
+
+IS_RASPBERRYPI = os.uname()[1] == 'raspberrypi'
+
+class Clock0Mock:
+    frequency = 0
+    enabled = False
 
 class SMBusMock:
+    clock_0 = Clock0Mock()
+    clock_1 = Clock0Mock()
+    clock_2 = Clock0Mock()
     def __init__(self, addr):
         pass
 
@@ -11,33 +19,23 @@ class SMBusMock:
 
 class Si5351:
     def __init__(self, i2c_bus=1, i2c_address=0x60):
-        self.bus = smbus.SMBus(i2c_bus)
-        # self.bus = SMBusMock(i2c_bus)
-        self.i2c_address = i2c_address
-        self.initialize()
+        if IS_RASPBERRYPI:
+            import board
+            import busio
+            import adafruit_si5351
+            i2c = busio.I2C(board.SCL, board.SDA)
 
-    def initialize(self):
-        # Reset the device
-        self.bus.write_byte_data(self.i2c_address, 177, 0xAC)
-        sleep(0.01)
+            self.bus = adafruit_si5351.SI5351(i2c)
+            self.bus.clock_0.enabled = False
+        else:
+            self.bus = SMBusMock(i2c_bus)
 
-        # Initialize CLK0 output
-        self.bus.write_byte_data(self.i2c_address, 16, 0x4F)  # CLK0 control
-        self.bus.write_byte_data(self.i2c_address, 17, 0x4F)  # CLK1 control
-        self.bus.write_byte_data(self.i2c_address, 18, 0x80)  # CLK2 control
 
     def set_frequency(self, freq_hz):
-        # Simplified frequency setting - you might need to adjust this
-        # based on your specific requirements
-        pll_freq = freq_hz * 100
-        divider = int(pll_freq / freq_hz)
-
-        # Write PLL and divider settings
-        # This is a simplified version - you'll need to implement proper
-        # register calculations for production use
+        self.bus.clock_0.frequency = freq_hz
 
     def key_on(self):
-        self.bus.write_byte_data(self.i2c_address, 16, 0x4F)  # Enable CLK0
+        self.bus.clock_0.enabled = True
 
     def key_off(self):
-        self.bus.write_byte_data(self.i2c_address, 16, 0x80)  # Disable CLK0
+        self.bus.clock_0.enabled = False

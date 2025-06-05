@@ -3,8 +3,27 @@ import os
 IS_RASPBERRYPI = os.uname()[1] == 'raspberrypi'
 
 class Clock0Mock:
-    frequency = 0
-    enabled = False
+    def __init__(self, frequency, enabled):
+        self._frequency = frequency
+        self._enabled = enabled
+
+    @property
+    def frequency(self):
+        return self._frequency
+
+    @frequency.setter
+    def frequency(self, value):
+        self._frequency = value
+        print('set frequency to ' + str(value))
+
+    @property
+    def enabled(self):
+        return self._enabled
+
+    @enabled.setter
+    def enabled(self, value):
+        self._enabled = value
+        print('set enabled to ' + str(value))
 
 class SMBusMock:
     clock_0 = Clock0Mock()
@@ -25,17 +44,17 @@ class Si5351:
             import adafruit_si5351
             i2c = busio.I2C(board.SCL, board.SDA)
 
-            self.bus = adafruit_si5351.SI5351(i2c)
-            self.bus.clock_0.enabled = False
+            self.board = adafruit_si5351.SI5351(i2c)
+            self.board.clock_0.enabled = False
         else:
-            self.bus = SMBusMock(i2c_bus)
+            self.board = SMBusMock(i2c_bus)
 
 
     def set_frequency(self, freq_hz):
-        self.bus.clock_0.frequency = freq_hz
+        self.board.clock_0.frequency = freq_hz
 
     def key_on(self):
-        self.bus.clock_0.enabled = True
+        self.board.clock_0.enabled = True
 
     def key_off(self):
-        self.bus.clock_0.enabled = False
+        self.board.clock_0.enabled = False

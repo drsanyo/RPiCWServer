@@ -19,4 +19,6 @@ jobs:
 #            python -m pip install --upgrade pip
 #            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: run script
-        run: python main.py
+        run: |
+          pip install -r requirements.txt 
+          python main.py

@@ -20,5 +20,8 @@ jobs:
 #            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: run script
         run: |
-          pip install -r requirements.txt 
-          python main.py
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          python your_script.py

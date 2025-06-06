@@ -17,11 +17,15 @@ class Si5351(Si5351Base):
         self.board.clock_0.enabled = False
 
     def set_frequency(self, freq_hz):
-        # self.board.clock_0.configure_clock(freq_hz, adafruit_si5351.SI5351_PLL_A)
+        self.board.pll_b.configure_integer(15)
+        print('PLL B: {0} MHz'.format(self.board.pll_b.frequency / 1000000))
+        self.board.clock_0.configure_fractional(self.board.pll_b, 53, 4787, 25000)
+        print('Clock 1: {0:0.5f} MHz'.format(self.board.clock_0.frequency / 1000000))
+        self.board.outputs_enabled = True
         pass
 
     def key_on(self):
-        self.board.clock_0.enabled = True
+        self.board.clock_0.outputs_enabled = True
 
     def key_off(self):
-        self.board.clock_0.enabled = False
+        self.board.clock_0.outputs_enabled = False

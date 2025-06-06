@@ -25,7 +25,7 @@ class Si5351(Si5351Base):
         pass
 
     def key_on(self):
-        self.board.clock_0.outputs_enabled = True
+        self.board.outputs_enabled = True
 
     def key_off(self):
-        self.board.clock_0.outputs_enabled = False
+        self.board.outputs_enabled = False

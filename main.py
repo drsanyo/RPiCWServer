@@ -1,21 +1,13 @@
-from math import trunc
-
+from BusinessLogic.platform_detector import IS_RASPBERRYPI
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-from pydantic import BaseModel
-from morse import MorseTranslator
-from si5351_controller import Si5351
+from BusinessLogic.morse import MorseTranslator
+from BusinessLogic.si5351_controller import Si5351
+from BusinessLogic.si5351Base import Si5351Base
 import asyncio
-import time
-
-
-# Add this class for request validation
-class TransmissionRequest(BaseModel):
-    message: str
-    frequency: int
-    speed: int
+from BusinessLogic.transmission_request import TransmissionRequest
 
 
 app = FastAPI()
@@ -23,7 +15,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Initialize hardware
-si5351 = Si5351()
+if IS_RASPBERRYPI:
+    si5351 = Si5351()
+else:
+    si5351 = Si5351Base()
+
 morse = MorseTranslator()
 
 # Global variables for control
@@ -35,7 +31,6 @@ async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-# Update the start_transmission endpoint
 @app.post("/start")
 async def start_transmission(request: TransmissionRequest):
     global is_transmitting

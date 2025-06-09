@@ -51,7 +51,6 @@ async def start_transmission(request: TransmissionRequest):
             for symbol in morse_code:
                 if not is_transmitting:
                     break
-                print('transmitting... ' + symbol)
                 if symbol == '.':
                     si5351.key_on()
                     await asyncio.sleep(dot_duration)

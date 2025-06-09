@@ -51,7 +51,7 @@ class Si5351(Si5351Base):
         print(f"Actual:    {actual_freq:.2f} Hz (error: {error:.2f} Hz)")
 
     def key_on(self):
-        self.board.clock_0.enabled = True
+        self.board.outputs_enabled = True
 
     def key_off(self):
-        self.board.clock_0.enabled = False
+        self.board.outputs_enabled = False

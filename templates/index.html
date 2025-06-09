@@ -40,6 +40,7 @@
             const message = document.getElementById('message').value;
             const frequency = parseInt(document.getElementById('frequency').value);
             const speed = parseInt(document.getElementById('speed').value);
+            const msg_delay = parseInt(document.getElementById('msg_delay').value);
 
             try {
                 const response = await fetch('/start', {

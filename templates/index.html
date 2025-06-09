@@ -23,6 +23,11 @@
                 <input type="number" id="speed" value="12" min="5" max="50">
             </div>
 
+            <div class="input-group">
+                <label for="msg_delay">Delay between message (Dots):</label>
+                <input type="number" id="msg_delay" value="100" min="1" max="500">
+            </div>
+
             <div class="button-group">
                 <button id="startBtn" onclick="startTransmission()">Start</button>
                 <button id="stopBtn" onclick="stopTransmission()">Stop</button>
@@ -45,7 +50,8 @@
                     body: JSON.stringify({
                         message: message,
                         frequency: frequency,
-                        speed: speed
+                        speed: speed,
+                        msg_delay: msg_delay
                     })
                 });
 

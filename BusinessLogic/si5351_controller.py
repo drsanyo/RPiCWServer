@@ -19,6 +19,7 @@ class Si5351(Si5351Base):
     def set_frequency(self, freq_hz):
         if not (1_000_000 <= freq_hz <= 30_000_000):
             raise ValueError("Frequency must be between 1 MHz and 30 MHz.")
+
         # Set PLL A to 900 MHz (25 MHz crystal * 36)
         self.board.pll_a.configure_integer(36)
 
@@ -44,7 +45,7 @@ class Si5351(Si5351Base):
         self.board.clock_0.configure_fractional(self.board.pll_a, int_div, numerator, denominator)
         self.board.outputs_enabled = True
 
-        # Confirm
+        # Debug
         actual_freq = self.board.clock_0.frequency
         error = abs(actual_freq - freq_hz)
         print(f"Requested: {freq_hz} Hz")

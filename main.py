@@ -64,7 +64,7 @@ async def start_transmission(request: TransmissionRequest):
                 elif symbol == ' ':
                     await asyncio.sleep(dot_duration * 3)
             # Delay between messages
-            await asyncio.sleep(request.msg_delay)
+            await asyncio.sleep(dot_duration * request.msg_delay)
 
     if morse_code:
         asyncio.create_task(transmit())

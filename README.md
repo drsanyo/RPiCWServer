@@ -24,9 +24,7 @@ A lightweight server application for transmitting CW (Morse code) messages using
 - Python 3.7+
 - Python packages:
   ```txt
-  flask
-  si5351
-  RPi.GPIO ; platform_system == "Linux" and platform_machine == "armv7l"
+  see requirements.txt
 
 ---
 
@@ -49,6 +47,8 @@ pip install -r requirements.txt
 
 # Run the application
 python main.py
+
+---
 
 # Open your browser and go to:
 - http://localhost:8080

@@ -32,21 +32,23 @@ A lightweight server application for transmitting CW (Morse code) messages using
 
  ⚠️ Note: Do **not** install `RPi.GPIO` unless you're running this on a **Raspberry Pi**.
 
-  ```bash
-  # Create a virtual environment
-  python -m venv venv
-  
-  # Activate the environment
-  source venv/bin/activate
-  
-  # Upgrade pip
-  pip install --upgrade pip
-  
-  ## Install dependencies
-  pip install -r requirements.txt
-  
-  # Run the application
-  python main.py
+    ```bash
+    # Create a virtual environment
+    python -m venv venv
+
+    # Activate the environment
+    source venv/bin/activate
+
+    # Upgrade pip
+    pip install --upgrade pip
+
+    ## Install dependencies
+    pip install -r requirements.txt
+
+    # Run the application
+    python main.py
+
+
 
 ## Open your browser and go to:
 > http://localhost:8080
